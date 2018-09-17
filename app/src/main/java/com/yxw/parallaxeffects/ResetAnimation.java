@@ -1,0 +1,34 @@
+package com.yxw.parallaxeffects;
+
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.Transformation;
+import android.widget.ImageView;
+
+public class ResetAnimation extends Animation {
+
+    private final ImageView mImage;
+    private final int startHeight;
+    private final int endHeight;
+
+    public ResetAnimation(ImageView mImage, int startHeight, int endHeight) {
+        this.mImage = mImage;
+        this.startHeight = startHeight;
+        this.endHeight = endHeight;
+
+        setInterpolator(new OvershootInterpolator());
+        //设置动画执行时长
+        setDuration(500);
+    }
+
+    @Override
+    protected void applyTransformation(float interpolatedTime, Transformation t) {
+        int newHeight = (int) (startHeight + interpolatedTime * (endHeight - startHeight));
+
+        mImage.getLayoutParams().height = newHeight;
+        mImage.requestLayout();
+
+        super.applyTransformation(interpolatedTime, t);
+    }
+
+}
